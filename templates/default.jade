@@ -1,0 +1,18 @@
+doctype
+html.no-js(lang="id")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-compatible",content="IE=edge")
+    title= title
+    meta(name="description", content= description)
+    meta(name="viewport",content="width=device-width, initial-scale=1")
+    // Place favicon.ico and apple-touch-icon(s) in the root directory
+
+    link(rel="stylesheet", href="/index.css")
+
+  body
+    include header.jade
+
+    main!= contents
+
+    include footer.jade

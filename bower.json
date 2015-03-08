@@ -1,0 +1,22 @@
+{
+  "name": "blog",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "Indra Pratama Putra"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize.css": "~3.0.2",
+    "normalize-opentype.css": "~0.2.4",
+    "requirejs": "~2.1.16",
+    "superagent": "~0.21.0"
+  }
+}
