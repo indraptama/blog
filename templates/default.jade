@@ -7,12 +7,12 @@ html.no-js(lang="id")
     meta(name="description", content= description)
     meta(name="viewport",content="width=device-width, initial-scale=1")
     // Place favicon.ico and apple-touch-icon(s) in the root directory
-
+    
     link(rel="stylesheet", href="/index.css")
-
+    script(data-main="/js/app" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.16/require.min.js")
   body
     include header.jade
 
-    main!= contents
+    main#Content!= contents
 
     include footer.jade

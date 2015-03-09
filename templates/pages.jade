@@ -13,7 +13,7 @@ html.no-js(lang="id")
   body
     include header.jade
 
-    main
+    main#Content
       h1.Content-title= title
       ul.BlockList
        each a in blogs
@@ -24,3 +24,5 @@ html.no-js(lang="id")
             time= a.date
             .excerpt
               != a.excerpt
+
+    include footer
