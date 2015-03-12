@@ -1,9 +1,0 @@
-{
-  "plugins": {
-    "metalsmith-markdownit": {
-      "typographer": true,
-      "html": true
-    },
-    "metalsmith-duo": {}
-  }
-}

@@ -1,0 +1,5 @@
+
+/* reset and basic style */
+* {box-sizing:border-box}
+@import "suitcss/base";
+@import "kennethormandy/normalize-opentype.css";

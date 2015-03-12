@@ -1,9 +1,0 @@
-@import '../bower_components/normalize.css/normalize.css';
-@import '../bower_components/normalize-opentype.css/normalize-opentype.css';
-
-
-.BlockLink {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
