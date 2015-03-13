@@ -88,7 +88,32 @@
 var page = require('visionmedia/page.js');
 var request = require('visionmedia/superagent');
 
-}, {"visionmedia/page.js":2,"visionmedia/superagent":3}],
+
+
+// define routes path
+var notFound = require('./src/js_modules/notFound.js');
+
+// Define routes function
+page('/', home);
+page('/blogs', blogs);
+page('/about', about);
+page('*', notFound);
+page({hashbang: true});
+
+
+function home(){
+  console.log('this is home');
+}
+
+function blogs() {
+  console.log('this is blogs');
+}
+
+function about() {
+  console.log('this is about');
+}
+
+}, {"visionmedia/page.js":2,"visionmedia/superagent":3,"./src/js_modules/notFound.js":4}],
 2: [function(require, module, exports) {
   /* globals require, module */
 
@@ -680,8 +705,8 @@ var request = require('visionmedia/superagent');
 
   page.sameOrigin = sameOrigin;
 
-}, {"path-to-regexp":4}],
-4: [function(require, module, exports) {
+}, {"path-to-regexp":5}],
+5: [function(require, module, exports) {
 /**
  * Expose `pathtoRegexp`.
  */
@@ -1963,8 +1988,8 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-}, {"emitter":5,"reduce":6}],
-5: [function(require, module, exports) {
+}, {"emitter":6,"reduce":7}],
+6: [function(require, module, exports) {
 
 /**
  * Expose `Emitter`.
@@ -2128,7 +2153,7 @@ Emitter.prototype.hasListeners = function(event){
 };
 
 }, {}],
-6: [function(require, module, exports) {
+7: [function(require, module, exports) {
 
 /**
  * Reduce `arr` with `fn`.
@@ -2153,4 +2178,17 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
+}, {}],
+4: [function(require, module, exports) {
+// Not Found Page Generator
+
+module.exports = function notFound() {
+
+  var mainContent = document.querySelector('main');
+  var errorText = '<!doctype html><html lang="en"><head> <meta charset="utf-8"> <title>Page Not Found</title> <meta name="viewport" content="width=device-width, initial-scale=1"> <style>*{line-height: 1.2; margin: 0;}html{color: #888; display: table; font-family: sans-serif; height: 100%; text-align: center; width: 100%;}body{display: table-cell; vertical-align: middle; margin: 2em auto;}h1{color: #555; font-size: 2em; font-weight: 400;}p{margin: 0 auto; width: 280px;}@media only screen and (max-width: 280px){body, p{width: 95%;}h1{font-size: 1.5em; margin: 0 0 0.3em;}}</style></head><body> <h1>Page Not Found</h1> <p>Sorry, but the page you were trying to view does not exist.</p></body></html>'
+  mainContent.innerHTML = errorText;
+  console.log("error 404 page not found");
+
+};
+
 }, {}]}, {}, {"1":""})

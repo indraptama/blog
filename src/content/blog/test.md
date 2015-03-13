@@ -1,7 +1,7 @@
 ---
 title: Tips penyusunan kontrak perjanjian
 date: 2012-08-20
-template: default.hbt
+template: default.hbs
 imgIntro: http://globe-views.com/dcim/dreams/letter/letter-01.jpg
 ---
 

@@ -9,8 +9,7 @@ var rename = require('gulp-rename');
 var plumber = require('gulp-plumber');
 var markitJSON = require('markit-json');
 var gulpsmith = require('gulpsmith');
-var _ = require('lodash');
-//var jade = require('jade');
+var jade = require('gulp-jade');
 var handlebars = require('handlebars');
 
 // metalsmith plugins
@@ -20,7 +19,7 @@ var permalinks  = require('metalsmith-permalinks');
 var markdown = require('metalsmith-markdownit');
 var gulp_front_matter = require('gulp-front-matter');
 var assign = require('lodash.assign');
-
+var excerpts = require('metalsmith-excerpts');
 
 // Error Notification
 var onError = function (err) {
@@ -81,15 +80,20 @@ gulp.task('metalsmith', function() {
             reverse: true
           }
         }))
+
         .metadata({site_name: "My Site"})
+
         .use(markdown({
           'typographer': true,
           'html': true
         }))
+        .use(excerpts())
+
         .use(templates({
           engine: 'handlebars',
-          directory: './src/content/templates/'
+          directory: './src/templates/'
         }))
+
         .use(permalinks('blogs/:title'))
       )
     .pipe(gulp.dest('build/'))
