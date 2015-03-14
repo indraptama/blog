@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>{{{title}}}</title>
-        <meta name="description" content="{{{exceprt}}}">
+        <meta name="description" content="+{{excerpt}}+">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -13,13 +13,14 @@
         <link rel="stylesheet" href="/public/css/index.css">
     </head>
     <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <header class="MainHeader">
 
-        {{{contents}}}
+      <nav>
+        <a href="/">home</a>
+        <a href="/blogs">blogs</a>
+        <a href="/about">about</a>
+        <a href="/rere">Not Found</a>
+      </nav>
 
-        <script src="/public/js/index.js"></script>
-
-    </body>
-</html>
+    </header>
+    <main>

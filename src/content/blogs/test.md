@@ -25,7 +25,7 @@ Ketentuan ini memuat 4 syarat sahnya suatu perjanjian yaitu sepakat, cakap, Suat
 - Ketentuan mengenai Hal-hal yang dapat membatalkan perjanjian
 - Ketentuan mengenai keadaan memaksa (keadaan diluar kemampuan para pihak yang mengakibatkan perjanjian tidak mungkin dilaksanakan/dilanjutkan)
 - Pemilihan Domisili Hukum
-- Keterangan Saksi
+- Keterangan Saksilooookokokokokoko
 - Tanda tangan / Cap jempol para pihak yang melaksanakan perjanjian.
 #### Hal-hal lain yang harus diperhatikan dalam pembuatan kontrak :
 - Tulis kontrak dalam bahasa Indonesia. Memang tidak ada kewajiban untuk membuat kontrak dalam bahasa Indonesia. Namun sebaiknya kontrak dibuat menggunakan bahasa yang dimengerti oleh masing-masing pihak dan juga hakim pengadilan tempat domisili hukum dipilih. Jika ada hal-hal yang memang harus disebutkan menggunakan bahasa asing, tuliskan juga definisinya pada bagian ketentuan umum.
@@ -33,4 +33,8 @@ Ketentuan ini memuat 4 syarat sahnya suatu perjanjian yaitu sepakat, cakap, Suat
 - Jangan men-TIP X tulisan yang salah dalam kontrak, jika ada bagian yang salah ketik, coret saja kemudian tulis perbaikannya pada bagian samping perjanjian. Pada bagian atas tulisan yang dicoret, dibubuhkan paraf oleh para pihak
 - Tiap halaman sebaiknya diberi paraf para pihak pada bagian kanan bawah.
 - Bubuhkan Materai sebagai bukti anda telah membayar pajak.
-Perlu di ingat sebaik-baiknya akta perjanjian, berapapun jumlah pasal yang terdapat didalamnya jika tidak dibuat dihadapan notaris tetaplah bukan akta otentik. Sebaiknya jika anda akan melaksanakan perjanjian dengan nilai besar lakukanlah dengan akta yang dihadapan Notaris.
+Perlu di ingat sebaik-baiknya akta perjanjian, berapapun jumlah pasal yang terdapat didalamnya jika tidak dibuat dihadapan notaris tetaplah bukan akta otentik. Sebaiknya jika anda akan melaksanakan perjanjian dengan nilai besar lakukanlah dengan akta yang dihadapan Notaris.sx
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

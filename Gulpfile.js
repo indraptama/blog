@@ -10,7 +10,12 @@ var plumber = require('gulp-plumber');
 var markitJSON = require('markit-json');
 var gulpsmith = require('gulpsmith');
 var jade = require('gulp-jade');
-var handlebars = require('handlebars');
+var Handlebars = require('handlebars');
+var hb = require('gulp-hb');
+var newer = require('gulp-newer');
+
+
+
 
 // metalsmith plugins
 var templates = require('metalsmith-templates');
@@ -20,6 +25,10 @@ var markdown = require('metalsmith-markdownit');
 var gulp_front_matter = require('gulp-front-matter');
 var assign = require('lodash.assign');
 var excerpts = require('metalsmith-excerpts');
+
+var fs = require('fs');
+
+
 
 // Error Notification
 var onError = function (err) {
@@ -59,47 +68,60 @@ gulp.task('js', function(){
 
 // compile metalsmith
 gulp.task('metalsmith', function() {
+
   return gulp.src('./src/content/**/*')
     //.pipe(plumber())
+
+    //.pipe(newer('./src/content/**/*'))
+
     .pipe(gulp_front_matter()).on("data", function(file) {
       assign(file, file.frontMatter);
       delete file.frontMatter;
     })
+
     .pipe(
       gulpsmith()
         .use(collections({
           portfolio: {
-            pattern:'./portfolio/*.md'
+            pattern:'portfolio/*.md'
           },
           pages: {
-            pattern:'./pages/*.md'
+            pattern:'pages/*.md'
           },
           blogs: {
-            pattern: './blog/*.md',
+            pattern: 'blogs/*.md',
             sortBy: 'date',
             reverse: true
           }
         }))
 
-        .metadata({site_name: "My Site"})
+        .metadata({
+          site_name: "My Site"
+          })
 
         .use(markdown({
           'typographer': true,
           'html': true
         }))
+
         .use(excerpts())
 
+        .use(permalinks({
+          pattern: ':collection/:title'
+        }))
+        
         .use(templates({
           engine: 'handlebars',
-          directory: './src/templates/'
+          directory: './src/templates/',
+          partials: {
+            header: 'head',
+            footer: 'foot'
+          }
         }))
 
-        .use(permalinks('blogs/:title'))
       )
     .pipe(gulp.dest('build/'))
 });
-
-
 
 
 // browser sync start server
@@ -112,11 +134,10 @@ gulp.task('browser-sync', function() {
 });
 
 
-gulp.task('default',['metalsmith','css','js','gulpjade','browser-sync'], function(){
+gulp.task('default',['metalsmith','css','js','browser-sync'], function(){
   gulp.watch('*.css', ['css']);
   gulp.watch('./src/css/**/*.css', ['css']);
-  gulp.watch('*.jade', ['jade']);
-  gulp.watch('./src/layout/**/*.jade', ['jade']);
+  gulp.watch('./src/content/**/*',['metalsmith']);
   gulp.watch('index.js', ['js']);
   gulp.watch('./src/js/**/*.js', ['js']);
 }); // gulp task default

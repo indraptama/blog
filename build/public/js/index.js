@@ -87,33 +87,26 @@
 
 var page = require('visionmedia/page.js');
 var request = require('visionmedia/superagent');
-
+var getMainContent = require('./src/js_modules/getmaincontent.js');
 
 
 // define routes path
 var notFound = require('./src/js_modules/notFound.js');
+var home = require('./src/js_modules/home');
+var blogs = require('./src/js_modules/blogs');
+var blogPost = require('./src/js_modules/blogpost');
+var about = require('./src/js_modules/about');
 
-// Define routes function
+
+// create routes
 page('/', home);
 page('/blogs', blogs);
+page('/blogs/:blogpost', blogPost);
 page('/about', about);
 page('*', notFound);
-page({hashbang: true});
+page({hashbang: false});
 
-
-function home(){
-  console.log('this is home');
-}
-
-function blogs() {
-  console.log('this is blogs');
-}
-
-function about() {
-  console.log('this is about');
-}
-
-}, {"visionmedia/page.js":2,"visionmedia/superagent":3,"./src/js_modules/notFound.js":4}],
+}, {"visionmedia/page.js":2,"visionmedia/superagent":3,"./src/js_modules/getmaincontent.js":4,"./src/js_modules/notFound.js":5,"./src/js_modules/home":6,"./src/js_modules/blogs":7,"./src/js_modules/blogpost":8,"./src/js_modules/about":9}],
 2: [function(require, module, exports) {
   /* globals require, module */
 
@@ -705,8 +698,8 @@ function about() {
 
   page.sameOrigin = sameOrigin;
 
-}, {"path-to-regexp":5}],
-5: [function(require, module, exports) {
+}, {"path-to-regexp":10}],
+10: [function(require, module, exports) {
 /**
  * Expose `pathtoRegexp`.
  */
@@ -1173,8 +1166,8 @@ function Response(req, options) {
   options = options || {};
   this.req = req;
   this.xhr = this.req.xhr;
-  // responseText is accessible only if responseType is '' or 'text'
-  this.text = (this.req.method !='HEAD' && (this.xhr.responseType === '' || this.xhr.responseType === 'text'))
+  // responseText is accessible only if responseType is '' or 'text' and on older browsers
+  this.text = ((this.req.method !='HEAD' && (this.xhr.responseType === '' || this.xhr.responseType === 'text')) || typeof this.xhr.responseType === 'undefined')
      ? this.xhr.responseText
      : null;
   this.statusText = this.req.xhr.statusText;
@@ -1342,22 +1335,23 @@ function Request(method, url) {
       err = new Error('Parser is unable to parse the response');
       err.parse = true;
       err.original = e;
+      return self.callback(err);
     }
 
-    if (res) {
-      self.emit('response', res);
-    }
+    self.emit('response', res);
 
-    if (res && res.status >= 200 && res.status < 300) {
+    if (err) {
       return self.callback(err, res);
     }
 
-    var msg = 'Unsuccessful HTTP response';
-    if (res) {
-      msg = res.statusText || msg;
+    if (res.status >= 200 && res.status < 300) {
+      return self.callback(err, res);
     }
-    var new_err = new Error(msg);
+
+    var new_err = new Error(res.statusText || 'Unsuccessful HTTP response');
     new_err.original = err;
+    new_err.response = res;
+    new_err.status = res.status;
 
     self.callback(err || new_err, res);
   });
@@ -1988,8 +1982,8 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-}, {"emitter":6,"reduce":7}],
-6: [function(require, module, exports) {
+}, {"emitter":11,"reduce":12}],
+11: [function(require, module, exports) {
 
 /**
  * Expose `Emitter`.
@@ -2153,7 +2147,7 @@ Emitter.prototype.hasListeners = function(event){
 };
 
 }, {}],
-7: [function(require, module, exports) {
+12: [function(require, module, exports) {
 
 /**
  * Reduce `arr` with `fn`.
@@ -2180,15 +2174,106 @@ module.exports = function(arr, fn, initial){
 };
 }, {}],
 4: [function(require, module, exports) {
+'use strict';
+
+var request = require('visionmedia/superagent');
+
+module.exports = function getMainContent(url, next) {
+
+  request
+    .get(url)
+    .type('text/html')
+    .end(function(err,res){
+        if (res.ok) {
+          var Dummy = document.createElement('div');
+          Dummy.innerHTML = res.text;
+          var MainSource = Dummy.querySelector('main');
+          var MainContainer = document.querySelector('main');
+          MainContainer.innerHTML = MainSource.innerHTML;
+        }
+
+        else {
+          alert('oops error')
+        }
+    });
+
+    function pushContent() {
+
+    };
+
+}// // end request module
+
+}, {"visionmedia/superagent":3}],
+5: [function(require, module, exports) {
 // Not Found Page Generator
 
 module.exports = function notFound() {
 
   var mainContent = document.querySelector('main');
-  var errorText = '<!doctype html><html lang="en"><head> <meta charset="utf-8"> <title>Page Not Found</title> <meta name="viewport" content="width=device-width, initial-scale=1"> <style>*{line-height: 1.2; margin: 0;}html{color: #888; display: table; font-family: sans-serif; height: 100%; text-align: center; width: 100%;}body{display: table-cell; vertical-align: middle; margin: 2em auto;}h1{color: #555; font-size: 2em; font-weight: 400;}p{margin: 0 auto; width: 280px;}@media only screen and (max-width: 280px){body, p{width: 95%;}h1{font-size: 1.5em; margin: 0 0 0.3em;}}</style></head><body> <h1>Page Not Found</h1> <p>Sorry, but the page you were trying to view does not exist.</p></body></html>'
+  var errorText = '<h1>Page Not Found</h1> <p>Sorry, but the page you were trying to view does not exist.</p>'
   mainContent.innerHTML = errorText;
   console.log("error 404 page not found");
 
+};
+
+}, {}],
+6: [function(require, module, exports) {
+module.exports = function home() {
+  console.log('this is home')
+};
+
+}, {}],
+7: [function(require, module, exports) {
+'use strict';
+var page = require('visionmedia/page.js');
+var getMainContent = require('./getmaincontent.js');
+
+module.exports = function blogs(ctx, next) {
+
+
+
+  if (ctx.state.blog) {
+    console.log('this is blogssssss');
+    next();
+  }
+  else {
+    console.log('this is blogs');
+    var blogIndex = ctx.pathname;
+    ctx.state.blog = getMainContent(blogIndex);
+    ctx.save();
+    next();
+  }
+};
+
+}, {"visionmedia/page.js":2,"./getmaincontent.js":4}],
+8: [function(require, module, exports) {
+'use strict';
+var page = require('visionmedia/page.js');
+var getMainContent = require('./getmaincontent.js');
+
+module.exports = function blogPost(ctx, next) {
+
+  var filePath = ctx.pathname;
+
+  if (ctx.state.filePath) {
+    ctx.blogpost = ctx.state.filePath;
+    next();
+    console.log('is chaced');
+  }
+
+  else {
+    getMainContent(filePath);
+    console.log('Loading file', filePath);
+  }
+
+};
+
+}, {"visionmedia/page.js":2,"./getmaincontent.js":4}],
+9: [function(require, module, exports) {
+'use strict';
+
+module.exports = function about() {
+  console.log('this is about')
 };
 
 }, {}]}, {}, {"1":""})
