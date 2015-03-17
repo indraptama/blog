@@ -1,84 +1,56 @@
-var gulp = require('gulp');
-var myth = require('gulp-myth');
-var gulpjade = require('gulp-jade');
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
-var duo = require('duo');
-var map = require('map-stream');
-var rename = require('gulp-rename');
-var plumber = require('gulp-plumber');
-var markitJSON = require('markit-json');
-var gulpsmith = require('gulpsmith');
-var jade = require('gulp-jade');
-var Handlebars = require('handlebars');
-var hb = require('gulp-hb');
-var newer = require('gulp-newer');
-
-
-
-
-// metalsmith plugins
-var templates = require('metalsmith-templates');
-var collections = require('metalsmith-collections');
-var permalinks  = require('metalsmith-permalinks');
-var markdown = require('metalsmith-markdownit');
+var Duo = require ('duo');
+var gulp = require ('gulp');
+var myth = require ('gulp-myth');
+var gulpsmith = require ('gulpsmith');
+var map = require ('map-stream');
+var collections = require ('metalsmith-collections');
+var markdown = require ('metalsmith-markdownit');
+var permalinks = require ('metalsmith-permalinks');
+var templates = require ('metalsmith-templates');
 var gulp_front_matter = require('gulp-front-matter');
 var assign = require('lodash.assign');
-var excerpts = require('metalsmith-excerpts');
-
-var fs = require('fs');
 
 
 
-// Error Notification
+
+gulp.task('default',['css','js','metalsmith'])
+
+
+
+// error notification
 var onError = function (err) {
   gutil.beep();
   console.log(err);
 };
 
-// Compile CSS
+
 gulp.task('css', function() {
-  return gulp.src('index.css')
-    .pipe(plumber())
-    .pipe(duoTask())
-    .pipe(myth())
-    .pipe(gulp.dest('./build/public/css'))
-    .pipe(reload({stream:true}))
-});
-
-// Compile Jade File
-gulp.task('gulpjade', function() {
-  return gulp.src('*.jade')
-    .pipe(plumber())
-    .pipe(gulpjade({
-      pretty: true
-    }))
-    .pipe(gulp.dest('build/'))
-    .pipe(reload({stream:true}))
-});
-
-//compile javascript
-gulp.task('js', function(){
-  return gulp.src('index.js')
-    .pipe(plumber())
-    .pipe(duoTask())
-    .pipe(gulp.dest('./build/public/js'))
-    .pipe(reload({stream:true}))
-});
-
-// compile metalsmith
-gulp.task('metalsmith', function() {
-
-  return gulp.src('./src/content/**/*')
+  return gulp.src('./asset/index.css')
     //.pipe(plumber())
+    .pipe(duo())
+    .pipe(myth())
+    .pipe(gulp.dest('./build'))
+    //.pipe(reload({stream:true}))
+});
 
+
+gulp.task('js', function(){
+  return gulp.src('./asset/index.js')
+    //.pipe(plumber())
+    .pipe(duo())
+    .pipe(gulp.dest('./build'))
+    //.pipe(reload({stream:true}))
+});
+
+
+gulp.task('metalsmith', function() {
+  return gulp.src('./src/**/*')
+    //.pipe(plumber())
     //.pipe(newer('./src/content/**/*'))
-
     .pipe(gulp_front_matter()).on("data", function(file) {
       assign(file, file.frontMatter);
       delete file.frontMatter;
     })
-
     .pipe(
       gulpsmith()
         .use(collections({
@@ -89,80 +61,47 @@ gulp.task('metalsmith', function() {
             pattern:'pages/*.md'
           },
           blogs: {
-            pattern: 'blogs/*.md',
+            pattern: 'src/blogs/*.md',
             sortBy: 'date',
             reverse: true
           }
         }))
-
         .metadata({
           site_name: "My Site"
           })
-
         .use(markdown({
           'typographer': true,
           'html': true
         }))
+        //.use(excerpts())
+        .use(permalinks(':post/:title'))
 
-        .use(excerpts())
-
-        .use(permalinks({
-          pattern: ':collection/:title'
-        }))
-        
         .use(templates({
-          engine: 'handlebars',
-          directory: './src/templates/',
-          partials: {
-            header: 'head',
-            footer: 'foot'
-          }
+          engine: 'jade',
+          pretty: true,
+          directory: './templates'
         }))
-
       )
-    .pipe(gulp.dest('build/'))
+    .pipe(gulp.dest('./build'))
 });
 
 
-// browser sync start server
-gulp.task('browser-sync', function() {
-    browserSync({
-        server: {
-            baseDir: "./build/"
-        }
-    });
-});
-
-
-gulp.task('default',['metalsmith','css','js','browser-sync'], function(){
-  gulp.watch('*.css', ['css']);
-  gulp.watch('./src/css/**/*.css', ['css']);
-  gulp.watch('./src/content/**/*',['metalsmith']);
-  gulp.watch('index.js', ['js']);
-  gulp.watch('./src/js/**/*.js', ['js']);
-}); // gulp task default
 
 
 
 
 
-
-
-
-// - Duo Function
-function duoTask(opts) {
+// Duo plugin
+function duo(opts) {
   opts = opts || {};
 
-  return map(function (file, cb) {
-    duo(__dirname)
+  return map(function(file, fn) {
+    Duo(file.base)
       .entry(file.path)
-      .run(function (err, src) {
-        if (err) {
-          return cb(err);
-        }
-
+      .run(function(err, src) {
+        if (err) return fn(err);
         file.contents = new Buffer(src);
-        cb(null, file);
+        fn(null, file);
       });
   });
 }

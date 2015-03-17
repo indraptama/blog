@@ -1,0 +1,30 @@
+//- 
+  based on html5boilerplate 
+  https://github.com/h5bp/html5-boilerplate
+
+
+doctype
+html.no-js(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-compatible",content="IE=edge")
+    title!= title
+    meta(name="description", content="test is the test")
+    meta(name="viewport",content="width=device-width, initial-scale=1")
+    // Place favicon.ico and apple-touch-icon(s) in the root directory
+    
+    link(rel="stylesheet", href="/index.css")
+    //script(data-main="/public/js/app" src="/public/bower_components/requirejs/require.js")
+
+  body
+    include header.jade
+    main
+      block content
+    
+    include asideleft.jade
+    include asideright.jade
+    include footer.jade
+
+
+
+    script(src="/app.js")
