@@ -10,10 +10,22 @@ var templates = require ('metalsmith-templates');
 var gulp_front_matter = require('gulp-front-matter');
 var assign = require('lodash.assign');
 
+// minify tools
+var uglify = require('gulp-uglify');
+var csso = require('gulp-csso');
+var htmlmin = require('gulp-htmlmin');
+var gulpif = require('gulp-if');
+var argv = require('yargs').argv;
 
 
 
-gulp.task('default',['css','js','metalsmith'])
+
+//---
+var production = !!(argv.production);
+
+gulp.task('default',['css','js','metalsmith']);
+gulp.task('build',['cssmin','jsmin','metalsmith','htmlmini']);
+
 
 
 
@@ -29,6 +41,7 @@ gulp.task('css', function() {
     //.pipe(plumber())
     .pipe(duo())
     .pipe(myth())
+    .pipe(gulpif(production, csso()))
     .pipe(gulp.dest('./build'))
     //.pipe(reload({stream:true}))
 });
@@ -38,6 +51,7 @@ gulp.task('js', function(){
   return gulp.src('./asset/index.js')
     //.pipe(plumber())
     .pipe(duo())
+    .pipe(gulpif(production, uglify()))
     .pipe(gulp.dest('./build'))
     //.pipe(reload({stream:true}))
 });
@@ -54,14 +68,8 @@ gulp.task('metalsmith', function() {
     .pipe(
       gulpsmith()
         .use(collections({
-          portfolio: {
-            pattern:'portfolio/*.md'
-          },
-          pages: {
-            pattern:'pages/*.md'
-          },
           blogs: {
-            pattern: 'src/blogs/*.md',
+            pattern: 'blogs/*',
             sortBy: 'date',
             reverse: true
           }
@@ -74,7 +82,7 @@ gulp.task('metalsmith', function() {
           'html': true
         }))
         //.use(excerpts())
-        .use(permalinks(':post/:title'))
+        .use(permalinks(':collection/:title'))
 
         .use(templates({
           engine: 'jade',
@@ -82,9 +90,33 @@ gulp.task('metalsmith', function() {
           directory: './templates'
         }))
       )
+    .pipe(gulpif(production, htmlmin({collapseWhitespace: true})))
     .pipe(gulp.dest('./build'))
 });
 
+
+// MINIFY TOOLS
+gulp.task('jsmin', function() {
+  return gulp.src('./asset/index.js')
+    //.pipe(plumber())
+    .pipe(duo())
+    .pipe(uglify())
+    .pipe(gulp.dest('./build'))
+});
+
+gulp.task('cssmin', function() {
+  return gulp.src('./asset/index.css')
+    //.pipe(plumber())
+    .pipe(duo())
+    .pipe(csso())
+    .pipe(gulp.dest('./build'))
+});
+
+gulp.task('htmlmini', function(){
+  return gulp.src('./build/**/*.html')
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('./build'))
+});
 
 
 
