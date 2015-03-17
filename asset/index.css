@@ -1,5 +1,6 @@
-.MainHeader {
-  display: flex;
-}
-
 @import "suitcss/base";
+@import "kennethormandy/normalize-opentype.css";
+
+
+/* Blocks */
+@import "css/block/mainheader.css";
