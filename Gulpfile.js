@@ -1,6 +1,8 @@
 var Duo = require ('duo');
 var gulp = require ('gulp');
 var myth = require ('gulp-myth');
+
+// dependencies for building blog
 var gulpsmith = require ('gulpsmith');
 var map = require ('map-stream');
 var collections = require ('metalsmith-collections');
@@ -12,7 +14,7 @@ var assign = require('lodash.assign');
 var through = require('through2');
 
 
-// minify tools
+// dependencies for production
 var uglify = require('gulp-uglify');
 var csso = require('gulp-csso');
 var htmlmin = require('gulp-htmlmin');
