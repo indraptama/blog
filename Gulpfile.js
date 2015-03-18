@@ -132,28 +132,17 @@ gulp.task('htmlmini', function(){
 
 
 
-/*
-// Duo plugin
-function duo(opts) {
-  opts = opts || {};
 
-  return map(function(file, fn) {
-    Duo(file.base)
-      .entry(file.path)
-      .run(function(err, src) {
-        if (err) return fn(err);
-        file.contents = new Buffer(src);
-        fn(null, file);
-      });
-  });
-}
+/**
+* duo function
+* by jhontron
+* https://gist.github.com/johntron/1c057bbad6d477362ab6
 */
 
 function duo() {
     return through.obj(function (file, enc, done) {
         var    build = new Duo(__dirname);
         build.development(true);
-        //build.installTo('vendor/');
         build.entry(file.path);
         build.run(function (err, src) {
             if (err) {
