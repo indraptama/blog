@@ -21,20 +21,24 @@ var htmlmin = require('gulp-htmlmin');
 var gulpif = require('gulp-if');
 var argv = require('yargs').argv;
 
-
+// Browser sync
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
 
 
 //---
 var production = !!(argv.production);
 
 gulp.task('default',['css','js','metalsmith']);
+
 gulp.task('build',['cssmin','jsmin','metalsmith','htmlmini']);
 
-gulp.task('dev',['css','js'], function(){
+gulp.task('dev',['css','js','metalsmith','browser-sync'], function(){
     gulp.watch('asset/*.css',['css']);
-    //gulp.watch('asset/css/**/*.css',['css']);
+    gulp.watch('asset/css/**/*.css',['css']);
     gulp.watch('asset/*.js',['js']);
     gulp.watch('asset/js-modules/*.js',['js']);
+    gulp.watch('src/**/*',['metalsmith']);
 })
 
 
@@ -55,7 +59,7 @@ gulp.task('css', function() {
     }))
     .pipe(gulpif(production, csso()))
     .pipe(gulp.dest('./build'))
-    //.pipe(reload({stream:true}))
+    .pipe(reload({stream:true}))
 });
 
 
@@ -65,7 +69,7 @@ gulp.task('js', function(){
     .pipe(duo())
     .pipe(gulpif(production, uglify()))
     .pipe(gulp.dest('./build'))
-    //.pipe(reload({stream:true}))
+    .pipe(reload({stream:true}))
 });
 
 
@@ -104,35 +108,18 @@ gulp.task('metalsmith', function() {
       )
     .pipe(gulpif(production, htmlmin({collapseWhitespace: true})))
     .pipe(gulp.dest('./build'))
-});
-
-
-// MINIFY TOOLS
-gulp.task('jsmin', function() {
-  return gulp.src('./asset/index.js')
-    //.pipe(plumber())
-    .pipe(duo())
-    .pipe(uglify())
-    .pipe(gulp.dest('./build'))
-});
-
-gulp.task('cssmin', function() {
-  return gulp.src('./asset/index.css')
-    //.pipe(plumber())
-    .pipe(duo())
-    .pipe(csso())
-    .pipe(gulp.dest('./build'))
-});
-
-gulp.task('htmlmini', function(){
-  return gulp.src('./build/**/*.html')
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest('./build'))
+    .pipe(reload({stream:true}))
 });
 
 
 
-
+gulp.task('browser-sync', function() {
+    browserSync({
+        server: {
+            baseDir: "./build/"
+        }
+    });
+});
 
 
 /**

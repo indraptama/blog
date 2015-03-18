@@ -2,7 +2,7 @@
 .MainHeader {
   display: flex;
   align-items: center;
-  background-color: teal;
+  background-color: #fff;
   height: 3rem;
   width: 100%;
   padding: 0.5rem;

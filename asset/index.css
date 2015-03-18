@@ -1,6 +1,50 @@
+@import "http://code.cdn.mozilla.net/fonts/fira.css";
+
+*{box-sizing:border-box}
 @import "suitcss/base";
 @import "kennethormandy/normalize-opentype.css";
 
+html {
+  background-color: #fcfcfc;
+}
+
+body {
+  font-family: 'droid serif';
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.685;
+  color: #444;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  line-height: 1.4;
+  margin: 0 0 1.685rem 0;
+  color: #222;
+}
+
+b, strong {
+  color:#222;
+}
+
+p {
+
+  margin: 0 0 1.685rem 0;
+}
 
 /* Blocks */
 @import "css/block/mainheader.css";
+
+.asideLeft {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 10rem;
+  height: 100%;
+  background-color: teal;
+  z-index: 99;
+}
+
+.PostArticle {
+  margin: 0 auto;
+  max-width: 35rem;
+}
