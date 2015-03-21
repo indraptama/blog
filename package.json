@@ -18,7 +18,7 @@
   "homepage": "https://github.com/indraptama/blog",
   "devDependencies": {
     "browser-sync": "^2.3.1",
-    "duo": "^0.9.6",
+    "duo": "^0.10.0",
     "gulp": "^3.8.11",
     "gulp-csso": "^1.0.0",
     "gulp-front-matter": "^1.2.2",
