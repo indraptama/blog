@@ -128,16 +128,17 @@ gulp.task('browser-sync', function() {
 * https://gist.github.com/johntron/1c057bbad6d477362ab6
 */
 
+
 function duo() {
     return through.obj(function (file, enc, done) {
         var    build = new Duo(__dirname);
         build.development(true);
         build.entry(file.path);
-        build.run(function (err, src) {
+        build.run(function (err, results) {
             if (err) {
                 return done(err);
             }
-            file.contents = new Buffer(src, 'utf8');
+            file.contents = new Buffer(results.code, 'utf8');
             return done(null, file);
         });
     });
